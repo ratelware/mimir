@@ -11,6 +11,7 @@ import com.ratelware.science.slr.server.management.session.SessionManager
 import com.ratelware.science.slr.shared.definitions.SessionId
 import com.ratelware.science.slr.shared.messages.session.{InitializeSession, TerminateSession}
 import akka.pattern._
+import com.ratelware.science.slr.server.management.session.msg.{SessionInitializationResponse, SessionTerminationResponse}
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 
 import scala.util.{Failure, Success}
@@ -22,10 +23,10 @@ object SessionAPI extends FailFastCirceSupport {
     path("login") {
       post {
         entity(as[InitializeSession]) { message =>
-          onComplete((sessionManager ? message).mapTo[Option[SessionId]]) {
-            case Success(Some(sessionId)) =>
+          onComplete((sessionManager ? message).mapTo[SessionInitializationResponse]) {
+            case Success(SessionInitializationResponse(Some(sessionId))) =>
               complete(HttpResponse(StatusCodes.Created).withHeaders(`Set-Cookie`(HttpCookie("sessionId", sessionId.id))))
-            case Success(None) =>
+            case Success(SessionInitializationResponse(None)) =>
               complete(StatusCodes.Unauthorized)
             case Failure(exception) =>
               complete(StatusCodes.InternalServerError)
@@ -36,10 +37,10 @@ object SessionAPI extends FailFastCirceSupport {
       path("logout") {
         post {
           entity(as[TerminateSession]) { message =>
-            onComplete((sessionManager ? message).mapTo[Option[Unit]]) {
-              case Success(Some(())) =>
+            onComplete((sessionManager ? message).mapTo[SessionTerminationResponse]) {
+              case Success(SessionTerminationResponse(true)) =>
                 complete(StatusCodes.OK)
-              case Success(None) =>
+              case Success(SessionTerminationResponse(false)) =>
                 complete(StatusCodes.Forbidden)
               case Failure(exception) =>
                 complete(StatusCodes.InternalServerError)

@@ -7,6 +7,7 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.testkit.{TestActor, TestProbe}
 import com.ratelware.science.slr.server.api.SessionAPI
+import com.ratelware.science.slr.server.management.session.msg.{SessionInitializationResponse, SessionTerminationResponse}
 import com.ratelware.science.slr.shared.definitions.{Password, SessionId, Username}
 import com.ratelware.science.slr.shared.messages.session.{InitializeSession, TerminateSession}
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
@@ -51,7 +52,7 @@ class LoginTests extends WordSpec with ScalatestRouteTest with MustMatchers with
         val sessionCookieId = "123456798"
         sessionManagerMock.setAutoPilot({
           case (sender, msg: InitializeSession) =>
-            sender ! Some(SessionId(sessionCookieId))
+            sender ! SessionInitializationResponse(Some(SessionId(sessionCookieId)))
             TestActor.KeepRunning
           case _ => TestActor.NoAutoPilot
         })
@@ -70,7 +71,7 @@ class LoginTests extends WordSpec with ScalatestRouteTest with MustMatchers with
         val sessionCookieId = "123456798"
         sessionManagerMock.setAutoPilot({
           case (sender, msg: InitializeSession) =>
-            sender ! Some(SessionId(sessionCookieId))
+            sender ! SessionInitializationResponse(Some(SessionId(sessionCookieId)))
             TestActor.KeepRunning
           case _ => TestActor.NoAutoPilot
         })
@@ -91,7 +92,7 @@ class LoginTests extends WordSpec with ScalatestRouteTest with MustMatchers with
       "return Forbidden if session did not exist" in {
         sessionManagerMock.setAutoPilot({
           case (sender, msg: TerminateSession) =>
-            sender ! None
+            sender ! SessionTerminationResponse(false)
             TestActor.KeepRunning
           case _ => TestActor.NoAutoPilot
         })
@@ -108,7 +109,7 @@ class LoginTests extends WordSpec with ScalatestRouteTest with MustMatchers with
     "return OK if session existed" in {
       sessionManagerMock.setAutoPilot({
         case (sender, msg: TerminateSession) =>
-          sender ! Some(())
+          sender ! SessionTerminationResponse(true)
           TestActor.KeepRunning
         case _ => TestActor.NoAutoPilot
       })
