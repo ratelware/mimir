@@ -1,0 +1,19 @@
+.capitalized {
+    text-transform: uppercase;
+}
+
+footer {
+    clear: both;
+}
+
+#app {
+    margin-top: 2em;
+}
+
+#logo {
+    height: 1.3em;
+}
+
+body {
+    background-color: silver;
+}

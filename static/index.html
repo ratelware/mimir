@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"/>
+    <link rel="stylesheet" href="stylesheets/main.css" />
+    <link rel="icon" type="image/png" href="images/favicon.ico" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+    <title>Scolar | We know SLRs</title>
+</head>
+<body>
+<div id="app" class="ui container raised segments">
+    <header class="app-container ui top attached segment" id="app-top">
+        <nav id="global-nav">
+            <div class="ui labeled icon menu">
+                <a class="active item" href="/#/bibliography" data-tab="bibliography"><i class="book icon"></i>Bibliography</a>
+                <a class="item disabled" href="/#/collaborators" data-tab="collaborators"><i class="users icon"></i>Collaborators</a>
+                <a class="item" href="/#/protocol" data-tab="protocol"><i class="clipboard outline icon"></i>Protocol</a>
+                <a class="item disabled" href="/#/results" data-tab="results"><i class="folder open icon"></i>Results</a>
+                <a class="item disabled" href="/#/report" data-tab="report"><i class="chart bar icon"></i>Report</a>
+
+                <div class="right menu">
+                    <button class="ui button dropdown item @if(activeTab == SettingsTab){active}" id="settings-menu-button">
+                        <i class="settings icon"></i>
+                        Settings
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <aside id="messages">
+        <div id="error-messages" class=" hidden ui error floating message center aligned segment"></div>
+        <div id="success-messages" class="hidden ui success floating message"></div>
+    </aside>
+    <main class="app-container ui attached segment" id="app-main">
+        <section id="bibliography-section" data-tab="bibliography" class="ui active padded tab">
+            Bibliography
+        </section>
+        <section id="collaborators-section" data-tab="collaborators" class="ui padded tab">
+            Collaborators
+        </section>
+        <section id="protocol-section" data-tab="protocol" class="ui padded tab">
+            Protocol
+        </section>
+        <section id="results-section" data-tab="results" class="ui padded tab">
+            Results
+        </section>
+        <section id="report-section" data-tab="report" class="ui padded tab">
+            Report
+        </section>
+    </main>
+</div>
+
+<!-- Actual app -->
+<script type="text/javascript" src="../ui/target/scala-2.12/scolar-ui-test-fastopt.js"></script>
+<script type="text/javascript">
+    WebApp().main();
+</script>
+
+<script src='javascripts/initCheckboxes.js' type="text/javascript"></script>
+<script src='javascripts/initDropdowns.js' type="text/javascript"></script>
+<script src='javascripts/initMessageCloses.js' type="text/javascript"></script>
+<script src='javascripts/initNags.js' type="text/javascript"></script>
+<script src='javascripts/initTabs.js' type="text/javascript"></script>
+
+</body>
+</html>
