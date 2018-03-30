@@ -28,12 +28,14 @@ class BibliographyTab(rootElement: Element) {
 
   def displayUploadCandidates(ev: Event): Unit = {
     val files = getInputElement.files
-
     val target = rootElement.querySelector(s"#uploadable-bibliography-entries")
-    target.appendChild(createSummary(files(0)))
 
-    $("#bibliography-upload-dimmer")
-      .dimmer("show")
+    for(i <- 0 until files.length) {
+      println(files.item(i))
+      target.appendChild(createSummary(files.item(i)))
+    }
+
+    $("#bibliography-upload-dimmer").dimmer("show")
   }
 
   private def getDimmer = rootElement.querySelector("#bibliography-upload-dimmer")
