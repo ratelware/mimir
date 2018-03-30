@@ -17,3 +17,7 @@ footer {
 body {
     background-color: silver;
 }
+
+.file-upload-input {
+    display: none;
+}

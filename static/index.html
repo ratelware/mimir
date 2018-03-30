@@ -14,14 +14,14 @@
     <header class="app-container ui top attached segment" id="app-top">
         <nav id="global-nav">
             <div class="ui labeled icon menu">
+                <a class="item disabled" href="/#/dashboard" data-tab="dashboard"><i class="tachometer alternate icon"></i>Dashboard</a>
                 <a class="active item" href="/#/bibliography" data-tab="bibliography"><i class="book icon"></i>Bibliography</a>
                 <a class="item disabled" href="/#/collaborators" data-tab="collaborators"><i class="users icon"></i>Collaborators</a>
                 <a class="item" href="/#/protocol" data-tab="protocol"><i class="clipboard outline icon"></i>Protocol</a>
                 <a class="item disabled" href="/#/results" data-tab="results"><i class="folder open icon"></i>Results</a>
-                <a class="item disabled" href="/#/report" data-tab="report"><i class="chart bar icon"></i>Report</a>
 
                 <div class="right menu">
-                    <button class="ui button dropdown item @if(activeTab == SettingsTab){active}" id="settings-menu-button">
+                    <button class="disabled ui button dropdown" id="settings-menu-button">
                         <i class="settings icon"></i>
                         Settings
                     </button>
@@ -34,8 +34,25 @@
         <div id="success-messages" class="hidden ui success floating message"></div>
     </aside>
     <main class="app-container ui attached segment" id="app-main">
+        <section id="dashboard-section" data-tab="dashboard" class="ui padded tab">
+            Dashboard
+        </section>
         <section id="bibliography-section" data-tab="bibliography" class="ui active padded tab">
             Bibliography
+            <input type="file" multiple id="bibliography-file-upload" class="file-upload-input"  />
+            <label for="bibliography-file-upload" class="right floated labeled ui icon button">
+                <i class="upload icon"></i>
+                Upload more
+            </label>
+            <div class="ui page dimmer" id="bibliography-upload-dimmer">
+                <div class="ui raised container segment">
+                <div class="ui cards" id="uploadable-bibliography-entries">
+                </div>
+                <div class="content">
+                    <button class="ui primary button">Submit</button>
+                </div>
+                </div>
+            </div>
         </section>
         <section id="collaborators-section" data-tab="collaborators" class="ui padded tab">
             Collaborators
@@ -46,17 +63,11 @@
         <section id="results-section" data-tab="results" class="ui padded tab">
             Results
         </section>
-        <section id="report-section" data-tab="report" class="ui padded tab">
-            Report
-        </section>
     </main>
 </div>
 
 <!-- Actual app -->
-<script type="text/javascript" src="../ui/target/scala-2.12/scolar-ui-test-fastopt.js"></script>
-<script type="text/javascript">
-    WebApp().main();
-</script>
+<script type="text/javascript" src="../ui/target/scala-2.12/scolar-ui-fastopt.js"></script>
 
 <script src='javascripts/initCheckboxes.js' type="text/javascript"></script>
 <script src='javascripts/initDropdowns.js' type="text/javascript"></script>

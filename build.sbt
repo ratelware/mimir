@@ -1,3 +1,4 @@
+
 import Resolvers._
 import Dependencies._
 
@@ -28,7 +29,10 @@ lazy val ui = project
   .settings(name := "scolar-ui")
   .settings(resolvers += artimaResolver)
   .enablePlugins(ScalaJSPlugin, BuildInfoPlugin, GitVersioning)
+  .settings(mainClass := Some("com.ratelware.science.slr.ui.WebApp$"))
   .settings(scalaJSUseMainModuleInitializer := true)
   .settings(libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.2")
+  .settings(libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.6.7")
+  .settings(libraryDependencies += "org.querki" %%% "jquery-facade" % "1.2")
   .settings(libraryDependencies ++= scalaTest)
   .dependsOn(shared)
