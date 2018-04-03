@@ -1,12 +1,9 @@
 package com.ratelware.science.slr.ui.bibliography
 
-import java.time.format.DateTimeFormatter
-import java.time.{Instant, LocalDate, LocalDateTime}
-import java.util.TimeZone
-
+import com.ratelware.science.slr.ui.html5.FileAPI._
+import com.ratelware.science.slr.ui.html5.extensions.FileUID
 import com.ratelware.science.slr.ui.navigation.ElementIDs
 import com.ratelware.science.slr.ui.quantities.FileSizeFormatter
-import com.ratelware.science.slr.ui.semanticui.Dimmer
 import org.scalajs.dom.{Element, File, document}
 import org.scalajs.dom.raw.{Event, HTMLInputElement}
 import scalatags.JsDom._
@@ -17,9 +14,14 @@ import org.querki.jquery._
 import scala.scalajs.js
 import com.ratelware.science.slr.ui.semanticui.Modal._
 
+import scala.collection.mutable.ArrayBuffer
 import scala.scalajs.js.Date
 
+
 class BibliographyTab(rootElement: Element) {
+
+  val filesBuffer = new ArrayBuffer[(FileUID, File)]()
+
   private def getInputElement: HTMLInputElement = {
     val inputElementCandidate = rootElement.querySelector(s"#${ElementIDs.BIBLIOGRAPHY_FILE_UPLOAD}")
     require(
@@ -38,8 +40,12 @@ class BibliographyTab(rootElement: Element) {
     val target = $(s"#uploadable-bibliography-entries")
 
     for(i <- 0 until files.length) {
-      val uid = files.item(i).name
-      target.append(createSummary(files.item(i), uid))
+      val file = files.item(i)
+      val fileUID = FileUID(file)
+      if(!filesBuffer.exists(f => f._1 == fileUID)) {
+        filesBuffer.append((fileUID, file))
+        target.append(createSummary(file, fileUID.uid))
+      }
     }
 
     $("#bibliography-upload-modal").modal("show")
@@ -48,8 +54,7 @@ class BibliographyTab(rootElement: Element) {
   private def getDimmer = rootElement.querySelector("#bibliography-upload-dimmer")
 
   private def createSummary(file: File, uid: String): Element = {
-    import com.ratelware.science.slr.ui.html5.FileAPI._
-    section(cls := "ui fluid card", id := s"bibliography-update-card-$uid") (
+    section(cls := "ui fluid card", id := s"bibliography-update-card-${uid}") (
       div(cls := "content") (
         i(
           cls := "right floated close icon"
@@ -84,10 +89,8 @@ class BibliographyTab(rootElement: Element) {
             input(
               tpe := "datetime-local",
               placeholder := "Export date",
-              value := {
-                println(new js.Date(file.lastModified).toISOString())
+              value :=
                 new js.Date(file.lastModified).toISOString().substring(0, 16) // UGLEY, but HTML/JS integration apparently sucks
-              }
             ),
             i(cls := "calendar alternate icon")
           )

@@ -4,9 +4,11 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"/>
     <link rel="stylesheet" href="stylesheets/main.css" />
+
     <link rel="icon" type="image/png" href="images/favicon.ico" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+
     <title>Scolar | We know SLRs</title>
 </head>
 <body>
@@ -44,13 +46,12 @@
                 <i class="upload icon"></i>
                 Upload more
             </label>
-            <div class="ui page dimmer" id="bibliography-upload-dimmer">
-                <div class="ui raised container segment">
-                <div class="ui cards" id="uploadable-bibliography-entries">
+            <div class="ui page modal" id="bibliography-upload-modal">
+                <div class="scrolling content">
+                    <div class="ui cards" id="uploadable-bibliography-entries"></div>
                 </div>
-                <div class="content">
-                    <button class="ui primary button">Submit</button>
-                </div>
+                <div class="actions">
+                    <button class="ui primary approve button">Submit</button>
                 </div>
             </div>
         </section>
