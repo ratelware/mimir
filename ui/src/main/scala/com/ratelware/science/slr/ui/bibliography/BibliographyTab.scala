@@ -4,7 +4,7 @@ import com.ratelware.science.slr.ui.html5.FileAPI._
 import com.ratelware.science.slr.ui.html5.extensions.FileUID
 import com.ratelware.science.slr.ui.navigation.ElementIDs
 import com.ratelware.science.slr.ui.quantities.FileSizeFormatter
-import org.scalajs.dom.{Element, File, document}
+import org.scalajs.dom.{Element, File, FileList, document}
 import org.scalajs.dom.raw.{Event, HTMLInputElement}
 import scalatags.JsDom._
 import scalatags.JsDom.all._
@@ -19,8 +19,8 @@ import scala.scalajs.js.Date
 
 
 class BibliographyTab(rootElement: Element) {
-
-  val filesBuffer = new ArrayBuffer[(FileUID, File)]()
+  println("Creating TAB")
+  val filesBuffer = new js.Array[(FileUID, File)]()
 
   private def getInputElement: HTMLInputElement = {
     val inputElementCandidate = rootElement.querySelector(s"#${ElementIDs.BIBLIOGRAPHY_FILE_UPLOAD}")
@@ -42,22 +42,32 @@ class BibliographyTab(rootElement: Element) {
     for(i <- 0 until files.length) {
       val file = files.item(i)
       val fileUID = FileUID(file)
-      if(!filesBuffer.exists(f => f._1 == fileUID)) {
-        filesBuffer.append((fileUID, file))
-        target.append(createSummary(file, fileUID.uid))
+      if(!this.filesBuffer.exists(f => f._1 == fileUID)) {
+        filesBuffer.push((fileUID, file))
+        target.append(createSummary(file, fileUID))
       }
     }
 
     $("#bibliography-upload-modal").modal("show")
+    getInputElement.value = ""
+  }
+
+  def removeBibliographyFile(uid: FileUID) = {
+    filesBuffer.splice(filesBuffer.indexWhere(_._1 == uid), 1)
+    $(s"#bibliography-update-card-${uid.uid}").hide().remove()
+    if(filesBuffer.isEmpty) {
+      $("#bibliography-upload-modal").modal("hide")
+    }
   }
 
   private def getDimmer = rootElement.querySelector("#bibliography-upload-dimmer")
 
-  private def createSummary(file: File, uid: String): Element = {
-    section(cls := "ui fluid card", id := s"bibliography-update-card-${uid}") (
+  private def createSummary(file: File, uid: FileUID): Element = {
+    section(cls := "ui fluid bibliography-update card", id := s"bibliography-update-card-${uid.uid}") (
       div(cls := "content") (
         i(
-          cls := "right floated close icon"
+          cls := "right floated close icon",
+          onclick := { () => removeBibliographyFile(uid) }
         ),
         h3(cls := "header")(file.name),
         div(cls := "meta")(FileSizeFormatter.format(file.size)),
@@ -70,7 +80,7 @@ class BibliographyTab(rootElement: Element) {
               tpe := "text",
               placeholder := "Database"
             ),
-            i( cls := "database icon")
+            i(cls := "database icon")
           )),
           p(div(
             cls := "fluid ui left icon input"
