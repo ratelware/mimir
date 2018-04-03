@@ -21,3 +21,7 @@ body {
 .file-upload-input {
     display: none;
 }
+
+.bibliography-update.card .close.icon {
+    cursor: pointer;
+}
