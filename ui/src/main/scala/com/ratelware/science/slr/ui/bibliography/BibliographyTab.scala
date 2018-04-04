@@ -4,18 +4,15 @@ import com.ratelware.science.slr.ui.html5.FileAPI._
 import com.ratelware.science.slr.ui.html5.extensions.FileUID
 import com.ratelware.science.slr.ui.navigation.ElementIDs
 import com.ratelware.science.slr.ui.quantities.FileSizeFormatter
-import org.scalajs.dom.{Element, File, FileList, document}
+import org.scalajs.dom.{Element, File}
 import org.scalajs.dom.raw.{Event, HTMLInputElement}
-import scalatags.JsDom._
 import scalatags.JsDom.all._
-import scalatags.JsDom.tags2._
+import scalatags.JsDom.tags2.section
 import org.querki.jquery._
 
 import scala.scalajs.js
 import com.ratelware.science.slr.ui.semanticui.Modal._
-
-import scala.collection.mutable.ArrayBuffer
-import scala.scalajs.js.Date
+import com.ratelware.science.slr.ui.semanticui.Dropdown._
 
 
 class BibliographyTab(rootElement: Element) {
@@ -48,6 +45,7 @@ class BibliographyTab(rootElement: Element) {
       }
     }
 
+    $(".ui.dropdown.bibliography-databases").dropdown(js.Dictionary("allowAdditions" -> true))
     $("#bibliography-upload-modal").modal("show")
     getInputElement.value = ""
   }
@@ -71,40 +69,48 @@ class BibliographyTab(rootElement: Element) {
         ),
         h3(cls := "header")(file.name),
         div(cls := "meta")(FileSizeFormatter.format(file.size)),
-        div(cls := "description")(
-          p(
+        div(cls := "ui description grid form") (
+          div( cls := "six wide column") (
           div(
-            cls := "fluid ui left icon input"
+            cls := "required field"
           ) (
-            input(
-              tpe := "text",
-              placeholder := "Database"
-            ),
-            i(cls := "database icon")
+            label(i(cls := "database icon"), span("Database")),
+            div(
+              cls := "ui search selection dropdown bibliography-databases"
+            )(
+              input(tpe := "hidden", name := "database"),
+              i(cls := "dropdown icon"),
+              div(cls := "default text")("Database"),
+              div(cls := "menu") (
+                div(cls := "item", attr("data-value") := "Scopus")("Scopus"),
+                div(cls := "item", attr("data-value") := "DBLP")("DBLP")
+              )
           )),
-          p(div(
-            cls := "fluid ui left icon input"
+          div(
+            cls := "ui calendar required field"
           ) (
-            input(
-              tpe := "text",
-              placeholder := "Search string"
-            ),
-            i(cls := "file code icon")
-          )),
-          p(div(
-            cls := "ui calendar"
-          ) (div(
-            cls := "fluid ui left icon input"
-          ) (
+            label(i(cls := "calendar alternate icon"), span("Export timestamp")),
             input(
               tpe := "datetime-local",
-              placeholder := "Export date",
+              placeholder := "Export timestamp",
               value :=
                 new js.Date(file.lastModified).toISOString().substring(0, 16) // UGLEY, but HTML/JS integration apparently sucks
-            ),
-            i(cls := "calendar alternate icon")
+            )
           )
-        )))
+        ),
+        div(
+          cls := "ten wide column"
+        )(
+        div(
+          cls := "field"
+        ) (
+          label(i(cls := "file code icon"), span("Search string")),
+          textarea(
+            rows := 5,
+            placeholder := "(Optional) Search string"
+          )
+        ))
+        )
       )
     ).render
   }
