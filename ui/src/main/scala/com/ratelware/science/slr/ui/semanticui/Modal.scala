@@ -8,6 +8,7 @@ import scala.scalajs.js
 @js.native
 trait Modal extends JQuery {
   def modal(s: String): this.type = js.native
+  def modal(b: js.Dictionary[Boolean]): this.type = js.native
 }
 
 object Modal {

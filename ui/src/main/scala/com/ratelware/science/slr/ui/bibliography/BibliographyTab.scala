@@ -46,7 +46,7 @@ class BibliographyTab(rootElement: Element) {
     }
 
     $(".ui.dropdown.bibliography-databases").dropdown(js.Dictionary("allowAdditions" -> true))
-    $("#bibliography-upload-modal").modal("show")
+    $("#bibliography-upload-modal").modal(js.Dictionary("autofocus" -> false, "centered" -> false)).modal("show")
     getInputElement.value = ""
   }
 
