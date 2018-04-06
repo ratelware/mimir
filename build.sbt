@@ -22,6 +22,7 @@ lazy val server = project
   .settings(libraryDependencies ++= configFilesSupport)
   .settings(libraryDependencies += commandLineParser)
   .settings(libraryDependencies ++= jsonSupport)
+  .settings(libraryDependencies += swagger)
   .dependsOn(shared)
 
 lazy val ui = project

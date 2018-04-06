@@ -22,6 +22,7 @@ object Dependencies {
     "de.heikoseeberger" %% "akka-http-circe" % "1.20.0"
   )
 
+  val swagger = "com.github.swagger-akka-http" %% "swagger-akka-http" % "0.14.0"
   val scalaTest = Seq(
     "org.scalactic" %% "scalactic" % "3.0.5",
     "org.scalatest" %% "scalatest" % "3.0.5" % Test

@@ -7,7 +7,7 @@ import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.headers.{HttpCookie, `Set-Cookie`}
 import akka.http.scaladsl.server.Directives._
 import akka.pattern._
-import com.ratelware.science.slr.server.api.{SessionAPI, StaticAPI}
+import com.ratelware.science.slr.server.api.{SessionAPI, StaticAPI, StudyAPI}
 import com.ratelware.science.slr.server.management.session.SessionManager
 import com.ratelware.science.slr.shared.definitions.SessionId
 import com.ratelware.science.slr.shared.messages.session.InitializeSession
@@ -42,7 +42,9 @@ object APIServer extends App {
 
   val routes =
     StaticAPI(config.get(StaticFileDir)).routes ~
-    SessionAPI.routes(sessionManager)
+    SessionAPI.routes(sessionManager) ~
+    StudyAPI.routes(sessionManager)
+
 
   val bindingFuture= Http().bindAndHandle(routes, config.get(HttpHost), config.get(HttpPort))
   StdIn.readLine()

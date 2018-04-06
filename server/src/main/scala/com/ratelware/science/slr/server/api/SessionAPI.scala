@@ -15,6 +15,7 @@ import com.ratelware.science.slr.server.management.session.msg.{SessionInitializ
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 
 import scala.util.{Failure, Success}
+import constants._
 
 object SessionAPI extends FailFastCirceSupport {
   import io.circe.generic.auto._
@@ -25,7 +26,7 @@ object SessionAPI extends FailFastCirceSupport {
         entity(as[InitializeSession]) { message =>
           onComplete((sessionManager ? message).mapTo[SessionInitializationResponse]) {
             case Success(SessionInitializationResponse(Some(sessionId))) =>
-              complete(HttpResponse(StatusCodes.Created).withHeaders(`Set-Cookie`(HttpCookie("sessionId", sessionId.id))))
+              complete(HttpResponse(StatusCodes.Created).withHeaders(`Set-Cookie`(HttpCookie(SESSION_COOKIE_NAME, sessionId.id))))
             case Success(SessionInitializationResponse(None)) =>
               complete(StatusCodes.Unauthorized)
             case Failure(exception) =>
@@ -34,9 +35,10 @@ object SessionAPI extends FailFastCirceSupport {
         }
       }
     } ~
-      path("logout") {
-        post {
-          entity(as[TerminateSession]) { message =>
+    path("logout") {
+      post {
+        entity(as[TerminateSession]) { message =>
+          deleteCookie(SESSION_COOKIE_NAME) {
             onComplete((sessionManager ? message).mapTo[SessionTerminationResponse]) {
               case Success(SessionTerminationResponse(true)) =>
                 complete(StatusCodes.OK)
@@ -46,9 +48,8 @@ object SessionAPI extends FailFastCirceSupport {
                 complete(StatusCodes.InternalServerError)
             }
           }
-
         }
       }
-
+    }
   }
 }
