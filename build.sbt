@@ -37,3 +37,10 @@ lazy val ui = project
   .settings(libraryDependencies += "org.querki" %%% "jquery-facade" % "1.2")
   .settings(libraryDependencies ++= scalaTest)
   .dependsOn(shared)
+
+lazy val bibtools = project
+  .settings(commonSettings)
+  .settings(name := "bibtools")
+  .settings(libraryDependencies += commandLineParser)
+  .settings(libraryDependencies += jbibTeX)
+  .settings(libraryDependencies ++= scalaTest)

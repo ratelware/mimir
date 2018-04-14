@@ -33,4 +33,5 @@ object Dependencies {
   )
 
   val commandLineParser = "com.github.scopt" %% "scopt" % "3.7.0"
+  val jbibTeX = "org.jbibtex" % "jbibtex" % "1.0.17"
 }
