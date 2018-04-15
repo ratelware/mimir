@@ -6,8 +6,8 @@ import scala.collection.JavaConverters._
 import com.ratelware.science.bibliography.domain._
 import org.jbibtex.{BibTeXEntry, BibTeXParser, Key, Value}
 
+import scala.collection.immutable.HashMap
 import scala.language.postfixOps
-
 import scala.util.Try
 
 object BibTeXReader {
@@ -29,8 +29,11 @@ object BibTeXReader {
     Publication(title, authors, doi, bibFieldsToPublicationFields(allFields, entryKey))
   }
 
-  private def bibFieldsToPublicationFields(fields: Map[Key, Value], entryKey: Key): Map[PublicationParam.Name, PublicationParam.Value] =
-    fields
-      .map(e => PublicationParam.Name(e._1.getValue) -> PublicationParam.Value(e._2.toUserString)) +
-      (PublicationParam.Name("entryKey") -> PublicationParam.Value(entryKey.getValue))
+  private def bibFieldsToPublicationFields(fields: Map[Key, Value], entryKey: Key): HashMap[PublicationParam.Name, PublicationParam.Value] =
+    HashMap(
+      (fields
+        .map(e =>
+          PublicationParam.Name(e._1.getValue) -> PublicationParam.Value(e._2.toUserString)) +
+        (PublicationParam.Name("entryKey") -> PublicationParam.Value(entryKey.getValue))).toVector :_*
+    )
 }

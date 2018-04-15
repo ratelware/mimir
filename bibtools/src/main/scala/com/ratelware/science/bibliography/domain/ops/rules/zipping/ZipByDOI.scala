@@ -1,4 +1,4 @@
-package com.ratelware.science.bibliography.domain.ops.rules
+package com.ratelware.science.bibliography.domain.ops.rules.zipping
 
 import com.ratelware.science.bibliography.domain.Publication
 import com.ratelware.science.bibliography.domain.ops.ZippingRule

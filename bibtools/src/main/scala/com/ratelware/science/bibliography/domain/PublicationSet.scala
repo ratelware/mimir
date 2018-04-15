@@ -1,6 +1,6 @@
 package com.ratelware.science.bibliography.domain
 
-import com.ratelware.science.bibliography.domain.ops.rules.ZipByDOIOrTitle
+import com.ratelware.science.bibliography.domain.ops.rules.zipping.ZipByDOIOrTitle
 import com.ratelware.science.bibliography.domain.ops.{ZipResult, ZippingRule}
 
 case class PublicationSet(publications: Vector[Publication])

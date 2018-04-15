@@ -1,5 +1,3 @@
 package com.ratelware.science.bibliography.domain
 
-class DomainError {
-
-}
+trait DomainError extends Exception
