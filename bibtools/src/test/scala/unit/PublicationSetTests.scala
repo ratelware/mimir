@@ -57,7 +57,15 @@ class PublicationSetTests extends WordSpec with MustMatchers with TryValues with
           PublicationSet.zip(Vector(publications3, publicationsConflicting2)).flatten(StrictFlatteningMode)
         }
       }
+    }
 
+    "splitting publications by set of publicationSets they occur at" should {
+      "create a minimal required number of entries" in {
+        val splitted = PublicationSet.zip(Vector(publications1, publications2))
+          .flatten().bySet()
+
+        splitted.splitted must have size 3
+      }
     }
   }
 }
