@@ -29,9 +29,6 @@ class BibTeXReaderTests extends WordSpec with MustMatchers with TryValues {
         val pubs = publications.success.value
         pubs.publications.find(_.title == Title("Automatic segmentation of method code into meaningful blocks: Design and evaluation")) mustNot be(empty)
         pubs.publications.find(_.doi.contains(DOI("10.1002/smr.1581"))) mustNot be(empty)
-
-
-
       }
     }
   }
