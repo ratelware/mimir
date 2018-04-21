@@ -43,4 +43,5 @@ lazy val bibtools = project
   .settings(name := "bibtools")
   .settings(libraryDependencies += commandLineParser)
   .settings(libraryDependencies += jbibTeX)
+  .settings(libraryDependencies += csvRW)
   .settings(libraryDependencies ++= scalaTest)

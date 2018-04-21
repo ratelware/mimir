@@ -23,17 +23,16 @@ object BibTeXReader {
       entry.getField(BibTeXEntry.KEY_AUTHOR).toUserString.split(" and ").map(Author).toVector
     } getOrElse  Vector.empty
 
-    val doi = Try { DOI(entry.getField(BibTeXEntry.KEY_DOI).toUserString) } toOption
-    val allFields = entry.getFields.asScala.toMap - BibTeXEntry.KEY_TITLE - BibTeXEntry.KEY_AUTHOR - BibTeXEntry.KEY_DOI
-
-    Publication(title, authors, doi, bibFieldsToPublicationFields(allFields, entryKey))
+    val doi = Try { DOI(entry.getField(BibTeXEntry.KEY_DOI).toUserString) }.toOption
+    Publication(title, authors, doi, bibFieldsToPublicationFields(entryKey, entry))
   }
 
-  private def bibFieldsToPublicationFields(fields: Map[Key, Value], entryKey: Key): HashMap[PublicationParam.Name, PublicationParam.Value] =
+  private def bibFieldsToPublicationFields(entryKey: Key, entry: BibTeXEntry): HashMap[PublicationParam.Name, PublicationParam.Value] =
     HashMap(
-      (fields
-        .map(e =>
-          PublicationParam.Name(e._1.getValue) -> PublicationParam.Value(e._2.toUserString)) +
-        (PublicationParam.Name("entryKey") -> PublicationParam.Value(entryKey.getValue))).toVector :_*
+      (entry.getFields.asScala
+        .map(e => PublicationParam.Name(e._1.getValue) -> PublicationParam.Value(e._2.toUserString)) +
+        (PublicationParam.Name("entryKey") -> PublicationParam.Value(entryKey.getValue)) +
+        (PublicationParam.Name("entryType") -> PublicationParam.Value(entry.getType.getValue))
+        ).toVector :_*
     )
 }

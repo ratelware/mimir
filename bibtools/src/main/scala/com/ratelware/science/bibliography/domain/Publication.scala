@@ -6,5 +6,5 @@ case class Publication(
                         title: Title,
                         authors: Vector[Author],
                         doi: Option[DOI],
-                        otherParams: HashMap[PublicationParam.Name, PublicationParam.Value]
+                        params: HashMap[PublicationParam.Name, PublicationParam.Value]
                       )

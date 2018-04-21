@@ -11,7 +11,7 @@ object StrictFlatteningMode extends FlatteningMode{
         throw FlatteningError(s"Publication core data does not match: ${acc} vs ${p1}")
       }
 
-      val params = acc.otherParams.merged(p1.otherParams)((a, b) => {
+      val params = acc.params.merged(p1.params)((a, b) => {
         if(a._2 != b._2) {
           throw FlatteningError(s"Values at ${a._1} and ${b._1} do not match (${a._2} vs ${b._2})")
         }
@@ -19,7 +19,7 @@ object StrictFlatteningMode extends FlatteningMode{
         a._1 -> a._2
       })
 
-      acc.copy(otherParams = params)
+      acc.copy(params = params)
     })
   }
 }

@@ -43,8 +43,8 @@ class PublicationSetTests extends WordSpec with MustMatchers with TryValues with
         val flat = PublicationSet.zip(Vector(publications2, publications3)).flatten(StrictFlatteningMode)
         val duplicate = flat.occurrences.find(_._2.doi.contains(DOI("10.1002/smr.1581")))
 
-        duplicate.value._2.otherParams.contains(PublicationParam.Name("volume")) must be(true)
-        duplicate.value._2.otherParams.contains(PublicationParam.Name("url")) must be(true)
+        duplicate.value._2.params.contains(PublicationParam.Name("volume")) must be(true)
+        duplicate.value._2.params.contains(PublicationParam.Name("url")) must be(true)
       }
 
       "throw an error if some fields do not match in strict mode" in {
