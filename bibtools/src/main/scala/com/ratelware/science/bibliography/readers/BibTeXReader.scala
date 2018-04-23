@@ -4,6 +4,7 @@ import java.io.{InputStream, InputStreamReader}
 
 import scala.collection.JavaConverters._
 import com.ratelware.science.bibliography.domain._
+import org.jbibtex.policies.BibTeXEntryKeyConflictResolutionPolicies
 import org.jbibtex.{BibTeXEntry, BibTeXParser, Key, Value}
 
 import scala.collection.immutable.HashMap
@@ -12,8 +13,11 @@ import scala.util.Try
 
 object BibTeXReader {
   def read(inStream: InputStream): Try[PublicationSet] = Try {
-    val db = new BibTeXParser().parse(new InputStreamReader(inStream))
+    val parser = new BibTeXParser(BibTeXEntryKeyConflictResolutionPolicies.REKEY_SUBSEQUENT)
+    val db = parser.parseFully(new InputStreamReader(inStream, "UTF-8"))
+    println(s"Read ${db.getObjects.size()} BibTeX objects")
     val entries = db.getEntries.asScala.map(p => entryToPublication(p._1, p._2)).toVector
+    println(s"Read ${entries.size} BibTeX entries. Exceptions: ${}")
     PublicationSet(entries)
   }
 

@@ -5,6 +5,7 @@ import java.io.{OutputStream, OutputStreamWriter}
 import scala.collection.JavaConverters._
 import com.ratelware.science.bibliography.domain._
 import org.jbibtex._
+import org.jbibtex.policies.BibTeXEntryKeyConflictResolutionPolicies
 
 import scala.language.postfixOps
 import scala.util.Try
@@ -12,7 +13,7 @@ import scala.language.implicitConversions
 
 object BibTeXStrategy extends FormattingStrategy {
   def write(publicationSet: PublicationSet, out: OutputStream): Try[Unit] = Try {
-    val db = new BibTeXDatabase
+    val db = new BibTeXDatabase(BibTeXEntryKeyConflictResolutionPolicies.REKEY_SUBSEQUENT)
     publicationSet.publications.map(p => publicationToBibTeXEntry(p)).foreach(e => db.addObject(e))
 
     new BibTeXFormatter().format(db, new OutputStreamWriter(out))
