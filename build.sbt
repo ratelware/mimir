@@ -8,6 +8,7 @@ lazy val commonSettings = Seq(scalaVersion := "2.12.5")
 lazy val shared = project
   .settings(commonSettings)
   .settings(name := "scolar-shared")
+  .disablePlugins(AssemblyPlugin)
   .enablePlugins(BuildInfoPlugin, GitVersioning)
 
 lazy val server = project
@@ -23,6 +24,7 @@ lazy val server = project
   .settings(libraryDependencies += commandLineParser)
   .settings(libraryDependencies ++= jsonSupport)
   .settings(libraryDependencies += swagger)
+  .disablePlugins(AssemblyPlugin)
   .dependsOn(shared)
 
 lazy val ui = project
@@ -36,6 +38,7 @@ lazy val ui = project
   .settings(libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.6.7")
   .settings(libraryDependencies += "org.querki" %%% "jquery-facade" % "1.2")
   .settings(libraryDependencies ++= scalaTest)
+  .disablePlugins(AssemblyPlugin)
   .dependsOn(shared)
 
 lazy val bibtools = project
